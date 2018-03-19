@@ -168,6 +168,25 @@ void q_reverse(queue_t *q)
 	//miss next judgement
 	if(q->head==NULL||q->tail==NULL) return;
 	if(q->size==1) return;
+	list_ele_t *p1,*p2,*p3;
+	p1=q->head;
+	p2=q->head;
+	p1=p1->next;
+	q->head->next=NULL;
+	//O(n) that can be fast to avoid overtime
+	while(p1)
+	{
+	//p2->next=NULL;
+	p3=p1->next;
+	p1->next=p2;
+	p2=p1;
+	p1=p3;
+	}	
+	p1=q->head;
+	q->head=q->tail;
+	q->tail=p1;
+
+	/*time is O(n2) too bad will exceed
 	list_ele_t *truetail=q->tail;
 	list_ele_t *temp1,*temp2;
 	temp1=q->head;
@@ -200,7 +219,7 @@ void q_reverse(queue_t *q)
 	//!!!forget this,because when reverse, the head go to the tail,and it point somewhere before,you shoule point it to NULL
 	//emmsho u should always remember when you involve in the tail pointer,you should take care of the place where it point.always you should point it to NULL
 	q->tail->next=NULL;
-	printf("head: %d\n tail:%d\n",q->head->value,q->tail->value);
+	printf("head: %d\n tail:%d\n",q->head->value,q->tail->value);*/
 	
 }
 
