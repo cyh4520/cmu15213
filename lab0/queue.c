@@ -38,6 +38,7 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {	
+	if(q==NULL) return;
     /* How about freeing the list elementrs? */
     //add by chen
     list_ele_t *temp,*temp2;
@@ -127,7 +128,7 @@ bool q_remove_head(queue_t *q, int *vp)
 	return false;
 	if(q->head==NULL)
 	return false;
-	
+	if(vp!=NULL)
 	*vp=q->head->value;
 	list_ele_t *temp=q->head;
     q->head = q->head->next;
@@ -164,6 +165,8 @@ void q_reverse(queue_t *q)
 {
     /* You need to write the code for this function */
 	if(q==NULL) return;
+	//miss next judgement
+	if(q->head==NULL||q->tail==NULL) return;
 	if(q->size==1) return;
 	list_ele_t *truetail=q->tail;
 	list_ele_t *temp1,*temp2;
@@ -176,9 +179,18 @@ void q_reverse(queue_t *q)
 			temp1=temp2;
 			temp2=temp2->next;
 		}
-		q->tail->next=temp2;
+		//this palce cant be q->tail it should be turetail->next
+		//q->tail->next=temp2;
+		truetail->next=temp2;
+		//this place i ignored first. if i omit this code.the link will be bidrectional.
+		temp2->next=NULL;
+
 		temp1->next=q->tail;
 		truetail=temp2;
+		//when u complete all the functions,you forget to turn temp1 and temp2 back to head.
+		//that will make mistake if the size more than 3.
+		temp1=q->head;
+		temp2=q->head;
 	}
 	truetail->next=q->head;
 	//exchange head and tail
@@ -186,7 +198,9 @@ void q_reverse(queue_t *q)
 	q->head=q->tail;
 	q->tail=truetail;
 	//!!!forget this,because when reverse, the head go to the tail,and it point somewhere before,you shoule point it to NULL
-	//emm u should always remember when you involve in the tail pointer,you should take care of the place where it point.always you should point it to NULL
+	//emmsho u should always remember when you involve in the tail pointer,you should take care of the place where it point.always you should point it to NULL
 	q->tail->next=NULL;
+	printf("head: %d\n tail:%d\n",q->head->value,q->tail->value);
+	
 }
 
